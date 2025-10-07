@@ -1,0 +1,24 @@
+GET http://localhost:5000/wishlist
+### add wishlist items
+POST http://localhost:5000/wishlist
+Content-Type: application/json
+
+{
+    "item":"shoes",
+    "quantity": 12,
+    "urgency": "high",
+    "orphanage": "MANSAS trust"
+}
+
+### add wishlist items
+POST http://localhost:5000/wishlist
+Content-Type: application/json
+
+{
+    "item":"books",
+    "quantity": 25,
+    "urgency": "medium",
+    "orphanage": "MANSAS trust"
+}
+### DELETE wishlist item
+DELETE http://localhost:5000/wishlist/68865d7cb1c787388c97dbe4

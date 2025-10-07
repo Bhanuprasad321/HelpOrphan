@@ -1,0 +1,13 @@
+# Node dependencies
+node_modules
+
+# Environment variables
+.env
+firebase-service.json
+
+# Build files
+dist
+build
+
+# Logs
+*.log
