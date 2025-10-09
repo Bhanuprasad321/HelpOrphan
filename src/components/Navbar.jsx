@@ -62,7 +62,7 @@ function Navbar() {
                     {/* 1. Logo / Title */}
                     <div className="flex-shrink-0">
                         <Link to="/" className="text-2xl font-extrabold text-white">
-                            Orphan<span className="text-teal-400">Help</span>
+                            Help<span className="text-teal-400">Orphan</span>
                         </Link>
                     </div>
 

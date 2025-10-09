@@ -7,13 +7,13 @@ function About() {
         
         {/* Heading */}
         <h1 className="text-4xl font-extrabold text-center text-teal-400 tracking-wide">
-          About <span className="text-white">OrphanHelp</span>
+          About <span className="text-white">HelpOrphan</span>
         </h1>
 
         {/* Mission Statement */}
         <p className="text-gray-300 leading-relaxed text-lg">
           <span className="font-semibold text-white">OrphanHelp</span> is a Socially Relevant Project (SRP) developed by 
-          <span className="text-teal-400"> Bhanu Prasad, Suresh, and Bharat </span> 
+          <span className="text-teal-400"> Bhanu Prasad, Suresh and Bharat </span> 
           from Maharaj Vijayaram Gajapathi Raj College of Engineering. 
           Our mission is to bridge the gap between orphanages and generous individuals 
           by providing a <span className="text-teal-300 font-medium">transparent, need-based wishlist platform.</span>
@@ -24,7 +24,7 @@ function About() {
           Many orphanages struggle with unmet needs such as food, clothing, school materials, 
           and hygiene products. This isn’t always due to a lack of generosity, 
           but rather due to <span className="font-semibold text-white">lack of visibility</span>. 
-          OrphanHelp highlights these needs, enabling people to contribute directly where it matters most.
+          HelpOrphan highlights these needs, enabling people to contribute directly where it matters most.
         </p>
 
         {/* Features List */}
@@ -42,7 +42,7 @@ function About() {
           We envision a world where <span className="text-white font-semibold">no orphanage feels forgotten</span>, 
           and every act of kindness reaches those who need it most. 
           Though developed as part of our academic journey, our hope is that 
-          OrphanHelp evolves into a <span className="text-teal-300 font-medium">real-world solution</span> 
+          HelpOrphan evolves into a <span className="text-teal-300 font-medium">real-world solution </span> 
           supported by communities, NGOs, and educational institutions alike.
         </p>
       </div>

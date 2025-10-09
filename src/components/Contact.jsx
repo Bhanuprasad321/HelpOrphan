@@ -31,7 +31,7 @@ function Contact() {
           <div className="bg-gray-700/40 rounded-lg p-5 shadow-inner">
             <h2 className="text-xl text-white font-semibold mb-2">🤝 For Donors & Volunteers</h2>
             <p className="text-gray-300">
-              Interested in supporting orphanages through OrphanHelp? 
+              Interested in supporting orphanages through HelpOrphan? 
               Let us know how you'd like to contribute — 
               <span className="text-teal-400"> donations, logistics, or awareness.</span>
             </p>
@@ -41,12 +41,12 @@ function Contact() {
           <div className="bg-gray-700/40 rounded-lg p-5 shadow-inner">
             <h2 className="text-xl text-white font-semibold mb-2">📧 Project Team</h2>
             <p className="text-gray-300">
-              Developed by <span className="text-teal-400">Bhanu Prasad Naidu, Suresh, and Bharat</span> 
+              Developed by <span className="text-teal-400">Bhanu Prasad Naidu, Suresh, and Bharat </span> 
               of Maharaj Vijayaram Gajapathi Raj College of Engineering.
             </p>
             <p className="text-gray-300 mt-3">
-              <span className="font-semibold text-white">Email:</span> orphanhelp.project@gmail.com <br />
-              <span className="font-semibold text-white">Phone:</span> +91 98765 43210 <br />
+              <span className="font-semibold text-white">Email:</span> HelpOrphan@gmail.com <br />
+              <span className="font-semibold text-white">Phone:</span> +91 7416282319 <br />
               <span className="font-semibold text-white">Address:</span> MVGRCE, Vizianagaram, Andhra Pradesh, India
             </p>
           </div>

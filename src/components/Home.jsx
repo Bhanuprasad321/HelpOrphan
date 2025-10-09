@@ -118,7 +118,7 @@ function Home({ items, loading, fetchItems }) {
         <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 text-center md:text-left">
           {/* 🎯 MOBILE FIX: Added sm:grid-cols-2 for better tablet/small desktop layout */}
           <div>
-            <h3 className="text-xl font-bold text-white mb-4">OrphanHelp</h3>
+            <h3 className="text-xl font-bold text-white mb-4">HelpOrphan</h3>
             <p className="text-sm max-w-xs mx-auto md:mx-0">
               Built with ❤️ to support orphanages and connect people willing to
               help.
@@ -170,7 +170,7 @@ function Home({ items, loading, fetchItems }) {
         </div>
 
         <p className="text-center text-gray-500 text-sm mt-8 border-t border-gray-800 pt-4">
-          © 2025 OrphanHelp | All rights reserved.
+          © 2025 HelpOrphan | All rights reserved.
         </p>
       </footer>
     </div>
