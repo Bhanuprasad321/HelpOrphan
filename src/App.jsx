@@ -8,7 +8,7 @@ import AdminWishListView from "./components/AdminWishListView";
 import AddForm from "./components/AddForm";
 import Wishlist from "./components/Wishlist";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-import Login from "./components/login";
+import Login from "./components/Login";
 import AdminDashboard from "./components/AdminDashboard";
 import DonationForm from "./components/DonationForm";
 import EditForm from "./components/EditForm";
@@ -37,7 +37,7 @@ function App() {
   const fetchItems = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/wishlist");
+      const response = await fetch("https://helporphanapi.onrender.com/wishlist");
       if (!response.ok) {
         throw new Error("Failed to fetch wishlist items");
       }
