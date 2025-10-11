@@ -52,7 +52,7 @@ function AddForm({ fetchItems }) { // 👈 FIX 1: Accepting the fetchItems prop
 
       const token = await currentUser.getIdToken();
 
-      const res = await fetch("http://localhost:5000/wishlist", {
+      const res = await fetch("https://helporphanapi.onrender.com/wishlist", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

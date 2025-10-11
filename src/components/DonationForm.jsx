@@ -62,7 +62,7 @@ function DonationForm({ fetchItems }) {
 
     try {
       // 1. Send Commitment Data (Log the donation)
-      const donationLogRes = await fetch("http://localhost:5000/donations", {
+      const donationLogRes = await fetch("https://helporphanapi.onrender.com/donations", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(commitmentData),
@@ -70,7 +70,7 @@ function DonationForm({ fetchItems }) {
       
       // 2. Update Item Status in the Wishlist (sets fulfilled: true and committedBy)
       const statusUpdateRes = await fetch(
-        `http://localhost:5000/wishlist/${itemId}`,
+        `https://helporphanapi.onrender.com/wishlist/${itemId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

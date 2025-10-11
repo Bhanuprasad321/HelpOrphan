@@ -85,7 +85,7 @@ function EditForm({ fetchItems }) {
             const token = await user.getIdToken();
 
             // 👈 CRITICAL: Use PUT method to update the existing resource
-            const res = await fetch(`http://localhost:5000/wishlist/${itemDetails._id}`, {
+            const res = await fetch(`https://helporphanapi.onrender.com/wishlist/${itemDetails._id}`, {
                 method: "PUT", // Use PUT for update
                 headers: {
                     "Content-Type": "application/json",

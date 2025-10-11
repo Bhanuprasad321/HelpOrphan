@@ -24,7 +24,7 @@ function Wishlist({ items, loading, fetchItems }) {
       const auth = getAuth();
       const token = await auth.currentUser.getIdToken();
 
-      const res = await fetch(`http://localhost:5000/wishlist/${id}`, {
+      const res = await fetch(`https://helporphanapi.onrender.com/wishlist/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`, 

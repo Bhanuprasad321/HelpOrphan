@@ -33,7 +33,7 @@ export default function AdminDashboard() {
             setLoading(true);
             setError(null);
             
-            const res = await fetch("http://localhost:5000/wishlist");
+            const res = await fetch("https://helporphanapi.onrender.com/wishlist");
             
             if (!res.ok) {
                 throw new Error(`HTTP error! Status: ${res.status}`);
@@ -44,7 +44,7 @@ export default function AdminDashboard() {
             
         } catch (err) {
             console.error("Failed to fetch wishlist:", err);
-            setError("Failed to load data from http://localhost:5000/wishlist. Ensure your backend server is running and the endpoint is correct.");
+            setError("Failed to load data from https://helporphanapi.onrender.com/wishlist. Ensure your backend server is running and the endpoint is correct.");
         } finally {
             setLoading(false);
         }
@@ -80,7 +80,7 @@ export default function AdminDashboard() {
             
             const token = await user.getIdToken(); 
 
-            const res = await fetch(`http://localhost:5000/wishlist/${itemId}`, {
+            const res = await fetch(`https://helporphanapi.onrender.com/wishlist/${itemId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`, 

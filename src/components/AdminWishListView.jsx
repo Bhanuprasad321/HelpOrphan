@@ -40,7 +40,7 @@ function AdminWishlistView() {
     try {
       setLoading(true);
       // Replace with your actual backend URL/logic
-      const res = await fetch("http://localhost:5000/wishlist", {
+      const res = await fetch("https://helporphanapi.onrender.com/wishlist", {
         cache: "no-cache",
       });
       if (!res.ok) throw new Error("Failed to fetch wishlist");
@@ -84,7 +84,7 @@ function AdminWishlistView() {
       }
       const token = await user.getIdToken();
 
-      const res = await fetch(`http://localhost:5000/wishlist/${id}`, {
+      const res = await fetch(`https://helporphanapi.onrender.com/wishlist/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
