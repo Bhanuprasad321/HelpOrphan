@@ -10,35 +10,19 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ==========================================================
-// 1. 🟢 CRITICAL FIX: UPDATED CORS CONFIGURATION
+// 1. 🟢 CRITICAL FIX: UPDATED CORS CONFIGURATION FOR MOBILE DATA
+//
+// We are using origin: '*' to ensure maximum compatibility 
+// with strict mobile carrier network filters/proxies.
 // ==========================================================
 
-// Define all trusted origins (local and deployed)
-const allowedOrigins = [
-    'http://localhost:5173',
-    'https://help-orphan.vercel.app', // <-- Vercel domain added here to fix the CORS error!
-    // Add any other production or staging domains here if needed
-];
-
-const corsOptions = {
-    // Check if the request's origin is in the allowed list
-    origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps or curl) 
-        // OR allow origins that are in our list
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            // Block requests from unknown origins
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    // CRITICAL FIX: Explicitly allow ALL methods needed, including PUT/PATCH/DELETE
+app.use(cors({
+    origin: '*', // Allows access from any domain (crucial for mobile carrier compatibility)
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
     credentials: true,
     optionsSuccessStatus: 204
-};
+}));
 
-app.use(cors(corsOptions));
 app.use(express.json()); // Middleware to parse JSON request bodies
 
 
