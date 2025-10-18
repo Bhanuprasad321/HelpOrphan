@@ -159,11 +159,17 @@ const { sendThankYouEmail } = require('./emailService');
 
 app.post('/donations', async (req, res) => {
   try {
+    console.log("📩 New donation request received:", req.body); // <--- ADD THIS
+
     const newDonation = new Donation(req.body);
     await newDonation.save();
 
+    console.log("✅ Donation saved, now sending email..."); // <--- ADD THIS
+
     // Send thank-you email asynchronously
-    sendThankYouEmail(newDonation).catch(err => console.error("Email Error:", err));
+    sendThankYouEmail(newDonation)
+      .then(() => console.log("✅ Email sent successfully"))
+      .catch(err => console.error("❌ Email Error:", err));
 
     res.status(201).json({ message: "Donation logged and email sent" });
   } catch (err) {
@@ -171,6 +177,7 @@ app.post('/donations', async (req, res) => {
     res.status(500).json({ error: "Failed to log donation" });
   }
 });
+
 
 
 
