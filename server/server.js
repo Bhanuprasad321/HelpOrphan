@@ -158,8 +158,8 @@ app.patch('/wishlist/:id', async (req, res) => {
 
 app.post('/donations', async (req, res) => {
   console.log("Donation request body:", req.body); // <-- log incoming data
-  const { donorName, contactEmail, itemCommitted } = req.body;
-  console.log("Email should go to:", contactEmail, "for item:", itemCommitted);
+  const { donorName, contactEmail, itemId , itemToFulfill } = req.body;
+  console.log("Email should go to:", contactEmail, "for item:", itemToFulfill);
 
   const newDonation = new Donation(req.body);
   await newDonation.save();
