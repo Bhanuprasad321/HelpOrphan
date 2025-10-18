@@ -160,24 +160,24 @@ app.patch('/wishlist/:id', async (req, res) => {
 // server.js - CORRECTED /donations route
 
 app.post('/donations', async (req, res) => {
-  console.log("Donation request body:", req.body); 
+  console.log("Donation request body:", req.body); 
 
-  try {
-    const newDonation = new Donation(req.body);
-    await newDonation.save(); // Save the document first
+  try {
+    const newDonation = new Donation(req.body);
+    await newDonation.save(); // ✅ Save first
 
-    // 💡 CRITICAL: Ensure you are passing a plain object for destructuring
-    // This MUST be the saved document (newDonation)
-    sendThankYouEmail(newDonation.toObject())
-      .then(() => console.log("✅ Email sent successfully (Promise resolved)"))
-      .catch(err => console.error("❌ Email Error (Promise rejected):", err.message));
+    // ✅ Convert Mongoose document to plain JS object before sending
+    sendThankYouEmail(newDonation.toObject())
+      .then(() => console.log("✅ Email sent successfully (Promise resolved)"))
+      .catch(err => console.error("❌ Email Error (Promise rejected):", err.message));
 
-    res.status(201).json({ message: "Donation logged and email process initiated" });
-  } catch (err) {
-    console.error("Donation POST error (DB or Server):", err);
-    res.status(500).json({ error: "Failed to log donation or send email." });
-  }
+    res.status(201).json({ message: "Donation logged and email process initiated" });
+  } catch (err) {
+    console.error("Donation POST error (DB or Server):", err);
+    res.status(500).json({ error: "Failed to log donation or send email." });
+  }
 });
+
 
 
 

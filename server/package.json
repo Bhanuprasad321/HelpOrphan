@@ -17,6 +17,7 @@
     "firebase-admin": "^13.4.0",
     "fs": "^0.0.1-security",
     "mongoose": "^8.16.5",
-    "nodemailer": "^7.0.9"
+    "nodemailer": "^7.0.9",
+    "resend": "^6.2.0"
   }
 }
