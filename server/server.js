@@ -17,10 +17,9 @@ const PORT = process.env.PORT || 5000;
 // ==========================================================
 
 app.use(cors({
-    origin: '*', // Allows access from any domain (crucial for mobile carrier compatibility)
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
-    credentials: true,
-    optionsSuccessStatus: 204
+  origin: 'https://help-orphan.vercel.app', // your frontend URL
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  credentials: true,
 }));
 
 app.use(express.json()); // Middleware to parse JSON request bodies
