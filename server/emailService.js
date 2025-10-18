@@ -5,8 +5,8 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false, // true for 465
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: 'playzzz012@gmail.com',
+    pass: 'hpus xory jbjw rqpz',
   },
 });
 
@@ -14,7 +14,7 @@ const sendThankYouEmail = async (donor) => {
   const { donorName, contactEmail, itemCommitted } = donor;
 
   const mailOptions = {
-    from: `"HelpOrphan" <${process.env.EMAIL_USER}>`,
+    from: `"HelpOrphan"`,
     to: contactEmail,
     subject: "Thank You for Your Generosity! 💖",
     html: `
