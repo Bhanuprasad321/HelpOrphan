@@ -52,6 +52,18 @@ app.get('/wishlist', async (req, res) => {
         res.status(500).json({ error: "Failed to fetch items" });
     }
 });
+// ===============================================
+//           4. DONOR WALL ROUTE
+// ===============================================
+app.get('/donors', async (req, res) => {
+    try {
+        const donors = await Donation.find().sort({ commitmentTimestamp: -1 }); // latest first
+        res.status(200).json(donors);
+    } catch (err) {
+        console.error("DonorWall GET error:", err);
+        res.status(500).json({ error: "Failed to fetch donor data" });
+    }
+});
 
 // Add new wishlist item (requires admin token)
 app.post('/wishlist', verifyToken, async (req, res) => {
