@@ -81,20 +81,6 @@ app.post('/wishlist', verifyToken, async (req, res) => {
 });
 const { sendThankYouEmail } = require('./emailService');
 
-app.post('/donations', async (req, res) => {
-  try {
-    const newDonation = new Donation(req.body);
-    await newDonation.save();
-
-    // Send thank-you email asynchronously
-    sendThankYouEmail(newDonation).catch(err => console.error("Email Error:", err));
-
-    res.status(201).json({ message: "Donation logged and email sent" });
-  } catch (err) {
-    console.error("Donation POST error:", err);
-    res.status(500).json({ error: "Failed to log donation" });
-  }
-});
 
 // Update wishlist item (requires admin token)
 app.put('/wishlist/:id', verifyToken, async (req, res) => {
@@ -169,18 +155,23 @@ app.patch('/wishlist/:id', async (req, res) => {
 
 
 // Route used by DonationForm (POST /donations) to log the donor's commitment
+const { sendThankYouEmail } = require('./emailService');
+
 app.post('/donations', async (req, res) => {
-    try {
-        // Log the full commitment data from the frontend
-        const newDonation = new Donation(req.body);
-        await newDonation.save();
-        
-        res.status(201).json({ message: "Donation commitment logged successfully" });
-    } catch (err) {
-        console.error("Donation POST error:", err);
-        res.status(500).json({ error: "Failed to log donation commitment" });
-    }
+  try {
+    const newDonation = new Donation(req.body);
+    await newDonation.save();
+
+    // Send thank-you email asynchronously
+    sendThankYouEmail(newDonation).catch(err => console.error("Email Error:", err));
+
+    res.status(201).json({ message: "Donation logged and email sent" });
+  } catch (err) {
+    console.error("Donation POST error:", err);
+    res.status(500).json({ error: "Failed to log donation" });
+  }
 });
+
 
 
 app.listen(PORT, () => {
