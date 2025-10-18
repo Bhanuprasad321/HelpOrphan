@@ -1,28 +1,27 @@
-// emailService.js - Final Robust Version
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
 
-// IMPORTANT: Check if credentials are empty, indicating an ENV issue
-if (!EMAIL_USER || !EMAIL_PASS) {
-    console.error("❌ ENVIRONMENT ERROR: EMAIL_USER or EMAIL_PASS not loaded. Check hosting ENV config.");
-}
-
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // Use false for port 587 (TLS)
+  // 🌟 MANDATORY CHANGE 1: Use Port 465 🌟
+  port: 465, 
+  // 🌟 MANDATORY CHANGE 2: Set secure to TRUE for Port 465 🌟
+  secure: true, // true for port 465, false for other ports (like 587)
   auth: {
     user: EMAIL_USER,
     pass: EMAIL_PASS,
   },
-  // Add connection test options
   pool: true,
   maxConnections: 5,
+  connectionTimeout: 30000, // Keep these debug settings for now
+  socketTimeout: 10000,
 });
 
+// ... rest of emailService.js (including transporter.verify and sendThankYouEmail)
+// ... (Your sendThankYouEmail function remains the same)
 // 🌟 CRITICAL: Verify Transporter Connection on startup
 transporter.verify(function(error, success) {
   if (error) {
