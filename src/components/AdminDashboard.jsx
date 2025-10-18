@@ -434,18 +434,18 @@ export default function AdminDashboard() {
           <div className="flex flex-col md:flex-row items-center justify-around gap-6">
             {/* Pie Chart Visualization */}
             <div className="relative w-40 h-40">
-              <div
-                className="w-full h-full rounded-full ring-4 ring-gray-700"
-                style={{
-                  background: `conic-gradient(
-    #059669 0% ${fulfilledPercentage}%, /* Emerald 600 for Fulfilled */
-    #facc15 ${fulfilledPercentage}% 100% /* Amber 400 for Pending */
-)`,
-                }}
-              >
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-lg font-bold text-white bg-gray-900 bg-opacity-50 rounded-full">
-                  <span className="text-3xl">{totalItems}</span>
-                  <span>Items</span>
+              <div className="relative w-40 h-40">
+                <div
+                  className="w-full h-full rounded-full ring-4 ring-gray-700"
+                  style={{
+                    background: `conic-gradient(#059669 0% ${fulfilledPercentage}%, #facc15 ${fulfilledPercentage}% 100%)`,
+                    transition: "background 0.5s ease",
+                  }}
+                >
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-lg font-bold text-white bg-gray-900 bg-opacity-50 rounded-full">
+                    <span className="text-3xl">{totalItems}</span>
+                    <span>Items</span>
+                  </div>
                 </div>
               </div>
             </div>

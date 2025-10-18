@@ -1,90 +1,88 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function Card({ data, isAdmin, onDelete }) {
-  const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  const urgencyColors = {
-    low: "bg-green-600",
-    medium: "bg-yellow-600",
-    high: "bg-red-600",
-  };
-  
-  // 🎯 CRITICAL FIX: Use the 'fulfilled' boolean property from the updated data
-  const isFulfilled = data.fulfilled;
+  const urgencyColors = {
+    low: "bg-green-500",
+    medium: "bg-yellow-500",
+    high: "bg-red-500",
+  };
 
-  const statusStyles = isFulfilled 
-    ? { 
-        cardClass: "opacity-60 border-green-500", 
-        statusColor: "bg-green-700", 
-        donationDisabled: true,
-        // Use committedBy if available for better display
-        statusText: data.committedBy ? `FULFILLED by ${data.committedBy.split(' ')[0]}` : "FULFILLED"
-      }
-    : {
-        cardClass: "border-gray-800", 
-        statusColor: "bg-teal-700", // Used teal for the default/pending status
-        donationDisabled: false,
-        // Default to PENDING if status is not explicitly set
-        statusText: data.status ? data.status.toUpperCase() : "PENDING"
-      };
+  const isFulfilled = data.fulfilled;
 
-  return (
-    <div
-      className={`w-72 bg-gray-900 border ${statusStyles.cardClass} rounded-2xl shadow-lg 
-                   hover:shadow-xl ${!statusStyles.donationDisabled && 'hover:scale-105'} transition-transform duration-300 
-                   flex flex-col justify-between p-5 relative`}
-    >
-      
-      {/* 1. STATUS BADGE (Positioned top-right) */}
-      <div 
-        className={`absolute top-0 right-0 m-3 px-3 py-1 rounded-full text-white text-xs font-semibold tracking-wider 
-                     ${statusStyles.statusColor} shadow-md`}
-      >
-        {statusStyles.statusText}
-      </div>
+  const statusStyles = isFulfilled
+    ? {
+        cardClass: "opacity-70 border-green-500",
+        statusColor: "bg-green-600",
+        donationDisabled: true,
+        statusText: data.committedBy ? `FULFILLED by ${data.committedBy.split(' ')[0]}` : "FULFILLED",
+      }
+    : {
+        cardClass: "border-gray-700",
+        statusColor: "bg-teal-600",
+        donationDisabled: false,
+        statusText: data.status ? data.status.toUpperCase() : "PENDING",
+      };
 
-      <div className="pt-4"> {/* Added padding to push content down below the badge */}
-        {/* Item Title */}
-        <h2 className="text-xl font-bold text-white mb-2">{data.item}</h2>
+  return (
+    <motion.div
+      whileHover={{ scale: 1.05, y: -3, boxShadow: "0px 15px 25px rgba(0,0,0,0.5)" }}
+      className={`w-72 bg-gray-900 border ${statusStyles.cardClass} rounded-2xl shadow-lg 
+                  flex flex-col justify-between p-5 relative transition-transform duration-300`}
+    >
+      {/* STATUS BADGE */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.1 }}
+        className={`absolute top-0 right-0 m-3 px-3 py-1 rounded-full text-white text-xs font-semibold tracking-wider 
+                    ${statusStyles.statusColor} shadow-lg`}
+      >
+        {statusStyles.statusText}
+      </motion.div>
 
-        {/* Item Details */}
-        <p className="text-gray-300">Quantity: {data.quantity}</p>
-        <p
-          className={`text-white text-sm px-2 py-1 mt-2 rounded-full inline-block 
-          ${urgencyColors[data.urgency]}`}
-        >
-          Urgency: {data.urgency}
-        </p>
-        <p className="text-gray-400 text-sm mt-1">{data.orphanage}</p>
-      </div>
+      {/* CONTENT */}
+      <div className="pt-6">
+        <h2 className="text-xl font-bold text-white mb-2">{data.item}</h2>
+        <p className="text-gray-300">Quantity: <span className="font-medium">{data.quantity}</span></p>
+        <p
+          className={`text-white text-sm px-3 py-1 mt-2 rounded-full inline-block font-medium 
+                      ${urgencyColors[data.urgency]}`}
+        >
+          Urgency: {data.urgency.toUpperCase()}
+        </p>
+        <p className="text-gray-400 text-sm mt-2 italic">{data.orphanage}</p>
+      </div>
 
-      {/* Action Buttons */}
-      <div className="flex justify-between items-center mt-4">
-        <button
-          className={`px-4 py-2 rounded-xl text-white font-medium shadow-md transition-all 
-            ${statusStyles.donationDisabled 
-              ? 'bg-gray-500 cursor-not-allowed' 
-              : 'bg-teal-600 hover:bg-teal-500'}`
-          }
-          onClick={() => navigate("/DonationForm", { state: { itemData: data } })}
-          disabled={statusStyles.donationDisabled}
-        >
-          {statusStyles.donationDisabled ? 'Fulfilled' : 'Donate'}
-        </button>
+      {/* ACTION BUTTONS */}
+      <div className="flex justify-between items-center mt-5 gap-3">
+        <motion.button
+          whileHover={{ scale: !statusStyles.donationDisabled ? 1.05 : 1 }}
+          whileTap={{ scale: !statusStyles.donationDisabled ? 0.95 : 1 }}
+          onClick={() => navigate("/DonationForm", { state: { itemData: data } })}
+          disabled={statusStyles.donationDisabled}
+          className={`flex-1 px-4 py-2 rounded-xl text-white font-medium shadow-md transition-all 
+                      ${statusStyles.donationDisabled ? 'bg-gray-500 cursor-not-allowed' : 'bg-teal-600 hover:bg-teal-500'}`}
+        >
+          {statusStyles.donationDisabled ? 'Fulfilled' : 'Donate'}
+        </motion.button>
 
-        {isAdmin && (
-          <button
-            onClick={() => onDelete(data._id)}
-            className="bg-red-600 hover:bg-red-500 px-3 py-2 rounded-xl 
-                       text-white font-medium flex items-center gap-2 transition-all"
-          >
-            🗑️ Delete
-          </button>
-        )}
-      </div>
-    </div>
-  );
+        {isAdmin && (
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => onDelete(data._id)}
+            className="bg-red-600 hover:bg-red-500 px-3 py-2 rounded-xl text-white font-medium flex items-center gap-2 shadow-md transition-all"
+          >
+            🗑️ Delete
+          </motion.button>
+        )}
+      </div>
+    </motion.div>
+  );
 }
 
 export default Card;

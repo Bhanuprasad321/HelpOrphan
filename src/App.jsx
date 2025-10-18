@@ -4,6 +4,7 @@ import Home from "./components/Home";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Navbar from "./components/Navbar";
+import DonorWall from "./components/DonorWall";
 import AdminWishListView from "./components/AdminWishListView";
 import AddForm from "./components/AddForm";
 import Wishlist from "./components/Wishlist";
@@ -98,7 +99,8 @@ function App() {
               </AdminRoute>
             } 
           /> 
-                  
+          <Route path="/donors" element={<DonorWall />} />
+
           {/* 🎯 Pass the real fetchItems function to DonationForm */} 
                  {" "}
           <Route

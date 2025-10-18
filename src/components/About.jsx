@@ -10,41 +10,47 @@ function About() {
           About <span className="text-white">HelpOrphan</span>
         </h1>
 
-        {/* Mission Statement */}
+        {/* Purpose & SRP */}
         <p className="text-gray-300 leading-relaxed text-lg">
-          <span className="font-semibold text-white">OrphanHelp</span> is a Socially Relevant Project (SRP) developed by 
-          <span className="text-teal-400"> Bhanu Prasad, Suresh and Bharat </span> 
-          from Maharaj Vijayaram Gajapathi Raj College of Engineering. 
-          Our mission is to bridge the gap between orphanages and generous individuals 
-          by providing a <span className="text-teal-300 font-medium">transparent, need-based wishlist platform.</span>
+          <span className="font-semibold text-white">HelpOrphan</span> is a <span className="text-teal-400 font-medium">Socially Relevant Project (SRP)</span> 
+          developed by <span className="text-teal-400">Bhanu Prasad, Suresh, and Bharat</span> from Maharaj Vijayaram Gajapathi Raj College of Engineering. 
+          The platform addresses a critical social need: connecting orphanages with individuals and organizations willing to help. 
+          By creating a <span className="text-teal-300 font-medium">transparent, need-based wishlist system</span>, we aim to ensure that orphanages receive essential supplies efficiently.
         </p>
 
-        {/* Problem Statement */}
+        {/* Why Website/App */}
         <p className="text-gray-300 leading-relaxed">
-          Many orphanages struggle with unmet needs such as food, clothing, school materials, 
-          and hygiene products. This isn’t always due to a lack of generosity, 
-          but rather due to <span className="font-semibold text-white">lack of visibility</span>. 
-          HelpOrphan highlights these needs, enabling people to contribute directly where it matters most.
+          We chose a <span className="font-semibold text-white">web-based application</span> for its accessibility and ease of use. 
+          Any user with internet access can view orphanages’ needs, donate, or contribute without geographical limitations. 
+          The platform also allows orphanages to update their wishlist in real-time, ensuring that the information remains accurate and actionable.
+        </p>
+
+        {/* Unique Selling Points */}
+        <p className="text-gray-300 leading-relaxed">
+          What makes <span className="text-white font-semibold">HelpOrphan</span> unique is its combination of <span className="text-teal-300 font-medium">real-time transparency, user engagement, and simplicity</span>. 
+          Donors can see exactly what is needed, and orphanages gain visibility that was previously missing. 
+          This reduces duplication of donations and ensures resources reach the children who need them most.
         </p>
 
         {/* Features List */}
         <div className="bg-gray-700/40 rounded-xl p-6 shadow-inner">
           <h2 className="text-xl font-semibold text-white mb-3">✨ Key Features:</h2>
           <ul className="list-disc list-inside space-y-2 text-gray-300">
-            <li>Lists <span className="text-teal-400">real-time required items</span> from orphanages</li>
-            <li>Allows well-wishers to <span className="text-teal-400">donate directly</span></li>
-            <li>Aims to <span className="text-teal-400">reduce wastage</span> with targeted donations</li>
+            <li>Showcases <span className="text-teal-400">real-time wishlists</span> from multiple orphanages</li>
+            <li>Enables donors to <span className="text-teal-400">contribute directly</span> to specific needs</li>
+            <li>Helps reduce wastage and duplication by highlighting <span className="text-teal-400">exact requirements</span></li>
+            <li>Admin dashboard allows <span className="text-teal-400">managing orphanage listings and items</span></li>
+            <li>Responsive web interface ensures accessibility across devices</li>
+            <li>Supports transparency and accountability in charitable contributions</li>
           </ul>
         </div>
 
         {/* Vision */}
         <p className="text-gray-300 leading-relaxed">
-          We envision a world where <span className="text-white font-semibold">no orphanage feels forgotten</span>, 
-          and every act of kindness reaches those who need it most. 
-          Though developed as part of our academic journey, our hope is that 
-          HelpOrphan evolves into a <span className="text-teal-300 font-medium">real-world solution </span> 
-          supported by communities, NGOs, and educational institutions alike.
+          Our vision is a world where <span className="text-white font-semibold">no orphanage is overlooked</span> and every act of kindness reaches those in need. 
+          Although developed as part of an academic project, we hope <span className="text-teal-300 font-medium">HelpOrphan</span> evolves into a real-world solution embraced by communities, NGOs, and educational institutions.
         </p>
+
       </div>
     </div>
   );
