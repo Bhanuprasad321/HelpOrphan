@@ -44,9 +44,7 @@ function DonationForm({ fetchItems }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  console.log("💡 Form submitted!", { donorName, contactEmail, itemId, itemToFulfill });
-
-
+    
     // NOTE: For security and best practice, use a custom modal instead of alert().
     if (!donorName || !contactEmail) {
       alert("Please fill in your Name and Contact Email.");
