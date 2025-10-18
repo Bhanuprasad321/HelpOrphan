@@ -157,19 +157,24 @@ app.patch('/wishlist/:id', async (req, res) => {
 // Route used by DonationForm (POST /donations) to log the donor's commitment
 
 app.post('/donations', async (req, res) => {
-  console.log("Donation request body:", req.body); // <-- log incoming data
-  const { donorName, contactEmail, itemId , itemToFulfill } = req.body;
-  console.log("Email should go to:", contactEmail, "for item:", itemToFulfill);
+  try {
+    console.log("🛠️ Donation route hit!");
+    console.log("Donation request body:", req.body);
 
-  const newDonation = new Donation(req.body);
-  await newDonation.save();
+    const newDonation = new Donation(req.body);
+    await newDonation.save();
 
-  sendThankYouEmail(newDonation)
-    .then(() => console.log("✅ Email sent successfully"))
-    .catch(err => console.error("❌ Email Error:", err));
+    sendThankYouEmail(newDonation)
+      .then(() => console.log("✅ Email sent successfully"))
+      .catch(err => console.error("❌ Email Error:", err));
 
-  res.status(201).json({ message: "Donation logged and email sent" });
+    res.status(201).json({ message: "Donation logged and email sent" });
+  } catch (err) {
+    console.error("❌ Donation POST error:", err);
+    res.status(500).json({ error: "Failed to log donation" });
+  }
 });
+
 
 
 
