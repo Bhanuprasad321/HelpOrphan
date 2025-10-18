@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendThankYouEmail = async (donor) => {
-  const { donorName, contactEmail, itemCommitted } = donor;
+  const { donorName, contactEmail, itemId , itemToFulfill } = donor;
 
   console.log("📧 Sending email to:", contactEmail); // log
 
@@ -21,7 +21,7 @@ const sendThankYouEmail = async (donor) => {
     subject: "Thank You for Your Generosity! 💖",
     html: `
       <h2>Hi ${donorName},</h2>
-      <p>Thank you for donating <strong>${itemCommitted}</strong> to our wishlist!</p>
+      <p>Thank you for donating <strong>${itemToFulfill}</strong> to our wishlist!</p>
       <p>Your support makes a real difference in the lives of orphans.</p>
       <p>Stay amazing! 🌟</p>
       <p>- The HelpOrphan Team</p>
