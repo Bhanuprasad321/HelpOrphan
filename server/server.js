@@ -155,7 +155,6 @@ app.patch('/wishlist/:id', async (req, res) => {
 
 
 // Route used by DonationForm (POST /donations) to log the donor's commitment
-const { sendThankYouEmail } = require('./emailService');
 
 app.post('/donations', async (req, res) => {
   try {
