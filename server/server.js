@@ -157,6 +157,7 @@ app.patch('/wishlist/:id', async (req, res) => {
 // Route used by DonationForm (POST /donations) to log the donor's commitment
 
 app.post('/donations', async (req, res) => {
+    console.log("Donation request body:", req.body);
   try {
     console.log("📩 New donation request received:", req.body); // <--- ADD THIS
 
