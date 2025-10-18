@@ -5,16 +5,18 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false, // true for 465
   auth: {
-    user: 'playzzz012@gmail.com',
-    pass: 'hpus xory jbjw rqpz',
-  },
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+},
 });
 
 const sendThankYouEmail = async (donor) => {
   const { donorName, contactEmail, itemCommitted } = donor;
 
+  console.log("📧 Sending email to:", contactEmail); // log
+
   const mailOptions = {
-    from: `"HelpOrphan"`,
+    from: `"HelpOrphan" <${process.env.EMAIL_USER}>`,
     to: contactEmail,
     subject: "Thank You for Your Generosity! 💖",
     html: `
@@ -26,7 +28,13 @@ const sendThankYouEmail = async (donor) => {
     `,
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("✅ Email sent successfully to:", contactEmail);
+  } catch (err) {
+    console.error("❌ Failed to send email:", err);
+  }
 };
+
 
 module.exports = { sendThankYouEmail };
