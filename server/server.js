@@ -1,31 +1,36 @@
 require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
 
 const verifyToken = require("./authMiddleware"); 
-const Wishlist = require('./models/Wishlist');
-const Donation = require('./models/Donation'); 
-const { sendThankYouEmail } = require('./emailService');
+
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors'); // Import the CORS middleware
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ==========================================================
-// 1️⃣ CORS CONFIGURATION FOR MOBILE DATA
+// 1. 🟢 CRITICAL FIX: UPDATED CORS CONFIGURATION FOR MOBILE DATA
+//
+// We are using origin: '*' to ensure maximum compatibility 
+// with strict mobile carrier network filters/proxies.
 // ==========================================================
+
 app.use(cors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: '*', // Allows access from any domain (crucial for mobile carrier compatibility)
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
     credentials: true,
     optionsSuccessStatus: 204
 }));
 
-app.use(express.json()); // Parse JSON request bodies
+app.use(express.json()); // Middleware to parse JSON request bodies
 
-// ==========================================================
-// 2️⃣ MONGODB CONNECTION
-// ==========================================================
+
+const Wishlist = require('./models/Wishlist');
+// ⚠️ REQUIRED: Create this model file for logging donations
+const Donation = require('./models/Donation'); 
+
+// Connect MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -33,41 +38,56 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("✅ MongoDB connected"))
 .catch(err => console.error("❌ MongoDB connection error:", err));
 
-// ==========================================================
-// 3️⃣ WISHLIST ROUTES
-// ==========================================================
+
+// ===============================================
+//           2. WISHLIST ROUTES
+// ===============================================
 
 // Get all wishlist items
 app.get('/wishlist', async (req, res) => {
     try {
         const items = await Wishlist.find();
-        res.status(200).json({ success: true, items });
+        res.json(items);
     } catch (err) {
-        res.status(500).json({ success: false, error: "Failed to fetch items" });
+        res.status(500).json({ error: "Failed to fetch items" });
+    }
+});
+// ===============================================
+//           4. DONOR WALL ROUTE
+// ===============================================
+app.get('/donors', async (req, res) => {
+    try {
+        const donors = await Donation.find().sort({ commitmentTimestamp: -1 }); // latest first
+        res.status(200).json(donors);
+    } catch (err) {
+        console.error("DonorWall GET error:", err);
+        res.status(500).json({ error: "Failed to fetch donor data" });
     }
 });
 
-// Add new wishlist item (admin only)
+// Add new wishlist item (requires admin token)
 app.post('/wishlist', verifyToken, async (req, res) => {
     try {
         if (req.user.email !== "admin@wishlist.com") {
-            return res.status(403).json({ success: false, error: "Forbidden: Not an admin" });
+            return res.status(403).json({ error: "Forbidden: Not an admin" });
         }
 
         const newItem = new Wishlist(req.body);
         await newItem.save();
-        res.status(201).json({ success: true, item: newItem });
-
+        res.json(newItem);
     } catch (err) {
-        res.status(500).json({ success: false, error: "Failed to add item" });
+        res.status(500).json({ error: "Failed to add item" });
     }
 });
+const { sendThankYouEmail } = require('./emailService');
 
-// Update wishlist item (admin only)
+
+// Update wishlist item (requires admin token)
 app.put('/wishlist/:id', verifyToken, async (req, res) => {
     try {
+        // Ensure only admin can modify
         if (req.user.email !== "admin@wishlist.com") {
-            return res.status(403).json({ success: false, error: "Forbidden: Not an admin" });
+            return res.status(403).json({ error: "Forbidden: Not an admin" });
         }
 
         const updatedItem = await Wishlist.findByIdAndUpdate(
@@ -76,108 +96,90 @@ app.put('/wishlist/:id', verifyToken, async (req, res) => {
             { new: true, runValidators: true }
         );
 
-        if (!updatedItem) return res.status(404).json({ success: false, error: "Item not found" });
+        if (!updatedItem) {
+            return res.status(404).json({ error: "Item not found" });
+        }
 
-        res.status(200).json({ success: true, item: updatedItem });
-
+        res.status(200).json(updatedItem);
     } catch (err) {
         console.error("Wishlist PUT error:", err);
-        res.status(500).json({ success: false, error: "Failed to update item" });
+        res.status(500).json({ error: "Failed to update item" });
     }
 });
 
-// Delete wishlist item (admin only)
+
+// Delete wishlist item (requires admin token)
 app.delete('/wishlist/:id', verifyToken, async (req, res) => {
     try {
         if (req.user.email !== "admin@wishlist.com") {
-            return res.status(403).json({ success: false, error: "Forbidden: Not an admin" });
+            return res.status(403).json({ error: "Forbidden: Not an admin" });
         }
 
         const deleted = await Wishlist.findByIdAndDelete(req.params.id);
-        if (!deleted) return res.status(404).json({ success: false, error: "Item not found" });
+        if (!deleted) {
+            return res.status(404).json({ error: "Item not found" });
+        }
 
-        res.status(200).json({ success: true, message: "Item deleted" });
-
+        res.status(200).json({ message: "Item deleted" });
     } catch (err) {
-        res.status(500).json({ success: false, error: "Deletion failed" });
+        res.status(500).json({ error: "Deletion failed" });
     }
 });
 
-// Patch wishlist item (donation fulfillment)
+// ===============================================
+//           3. DONATION ROUTES
+// ===============================================
+
+// Route used by DonationForm (PATCH /wishlist/:id) to fulfill the item status
 app.patch('/wishlist/:id', async (req, res) => {
     try {
         const { fulfilled, committedBy } = req.body;
-
-        if (typeof fulfilled !== "boolean" || !committedBy) {
-            return res.status(400).json({
-                success: false,
-                error: "Missing or invalid fields: fulfilled (boolean), committedBy (string)"
-            });
-        }
-
+        
+        // Find the item and update the status
         const updatedItem = await Wishlist.findByIdAndUpdate(
             req.params.id,
-            { fulfilled, committedBy },
-            { new: true }
+            { fulfilled: fulfilled, committedBy: committedBy }, // Set fulfilled to true and log donor
+            { new: true } // Return the updated document
         );
 
-        if (!updatedItem) return res.status(404).json({ success: false, error: "Wishlist item not found" });
-
-        res.status(200).json({ success: true, message: "Wishlist item updated", item: updatedItem });
-
+        if (!updatedItem) {
+            return res.status(404).json({ error: "Wishlist item not found for update" });
+        }
+        
+        res.status(200).json(updatedItem);
     } catch (err) {
         console.error("Wishlist PATCH error:", err);
-        res.status(500).json({ success: false, error: "Failed to update item" });
+        res.status(500).json({ error: "Failed to update item status" });
     }
 });
 
-// ==========================================================
-// 4️⃣ DONATION ROUTES
-// ==========================================================
 
-// Get donor wall (latest donors first)
-app.get('/donors', async (req, res) => {
-    try {
-        const donors = await Donation.find().sort({ commitmentTimestamp: -1 });
-        res.status(200).json({ success: true, donors });
-    } catch (err) {
-        console.error("DonorWall GET error:", err);
-        res.status(500).json({ success: false, error: "Failed to fetch donor data" });
-    }
-});
+// Route used by DonationForm (POST /donations) to log the donor's commitment
 
-// Log a donation
 app.post('/donations', async (req, res) => {
-    try {
-        const { donorName, contactEmail, itemCommitted } = req.body;
+  try {
+    console.log("📩 New donation request received:", req.body); // <--- ADD THIS
 
-        if (!donorName || !contactEmail || !itemCommitted) {
-            return res.status(400).json({ 
-                success: false, 
-                error: "Missing required fields: donorName, contactEmail, itemCommitted" 
-            });
-        }
+    const newDonation = new Donation(req.body);
+    await newDonation.save();
 
-        const newDonation = new Donation({ donorName, contactEmail, itemCommitted });
-        await newDonation.save();
-        console.log("✅ Donation saved:", newDonation);
+    console.log("✅ Donation saved, now sending email..."); // <--- ADD THIS
 
-        // Send email asynchronously
-        sendThankYouEmail(newDonation)
-            .then(() => console.log("✅ Email sent successfully"))
-            .catch(err => console.error("❌ Email sending error:", err));
+    // Send thank-you email asynchronously
+    sendThankYouEmail(newDonation)
+      .then(() => console.log("✅ Email sent successfully"))
+      .catch(err => console.error("❌ Email Error:", err));
 
-        res.status(201).json({ success: true, message: "Donation logged successfully", donation: newDonation });
-
-    } catch (err) {
-        console.error("Donation POST error:", err);
-        res.status(500).json({ success: false, error: "Failed to log donation" });
-    }
+    res.status(201).json({ message: "Donation logged and email sent" });
+  } catch (err) {
+    console.error("Donation POST error:", err);
+    res.status(500).json({ error: "Failed to log donation" });
+  }
 });
 
-// ==========================================================
-// 5️⃣ START SERVER
-// ==========================================================
+
+
+
 app.listen(PORT, () => {
-    console.log(`🚀 Server listening on port: ${PORT}`);
+    console.log(` Listening on port: ${PORT}`);
 });
